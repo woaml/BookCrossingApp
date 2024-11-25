@@ -11,7 +11,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    dateabase: postgresql
+    database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   mail:
     host: localhost
@@ -28,3 +28,9 @@ spring:
         connectiontimeout: 5000
         timeout: 3000
         writetimeout: 5000
+
+application:
+  security:
+    jwt:
+      secret-key: 6f54b9c8058273545b00596d1a603dd1ca0b56207c0ba4e5fa0f121d93cdf3482ba5f2f105e72195af75b38431dc9d6d262922c045d8686595ad0c3cfeedae33
+      expiration: 86400000
