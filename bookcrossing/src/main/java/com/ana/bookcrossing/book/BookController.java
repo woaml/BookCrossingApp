@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("books")
 @RequiredArgsConstructor
@@ -76,6 +74,37 @@ public class BookController {
         return ResponseEntity.ok(service.updateBookShareable(bookId, connectedUser));
     }
 
+    @PatchMapping("/archived/{book-id}")
+    public ResponseEntity<Long> updateBookArchived(
+            @PathVariable("book-id") Long bookId,
+            Authentication connectedUser
+    ){
+        return ResponseEntity.ok(service.updateBookArchived(bookId, connectedUser));
+    }
+
+    @PostMapping("/borrow/{book-id}")
+    public ResponseEntity<Long> borrowBook(
+            @PathVariable("book-id") Long bookId,
+            Authentication connectedUser
+    ){
+        return ResponseEntity.ok(service.borrowBook(bookId, connectedUser));
+    }
+
+    @PatchMapping("/borrow/return/{book-id}")
+    public ResponseEntity<Long> returnBook(
+            @PathVariable("book-id") Long bookId,
+            Authentication connectedUser
+    ){
+        return ResponseEntity.ok(service.returnBook(bookId, connectedUser));
+    }
+
+    @PatchMapping("/borrow/return/approve/{book-id}")
+    public ResponseEntity<Long> approveReturnBook(
+            @PathVariable("book-id") Long bookId,
+            Authentication connectedUser
+    ){
+        return ResponseEntity.ok(service.approveReturnBook(bookId, connectedUser));
+    }
 
 
 
