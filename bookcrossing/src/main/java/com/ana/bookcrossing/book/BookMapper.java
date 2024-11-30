@@ -1,5 +1,6 @@
 package com.ana.bookcrossing.book;
 
+import com.ana.bookcrossing.file.FileUtils;
 import com.ana.bookcrossing.history.BookTransactionHistory;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class BookMapper {
                 .rate(book.getRate())
                 .archived(book.isArchived())
                 .owner(book.getOwner().fullName())
-                //.cover()
+                .cover(FileUtils.readFileFromLocation(book.getBookCover()))
                 .build();
     }
 

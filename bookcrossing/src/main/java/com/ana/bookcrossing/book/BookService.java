@@ -2,6 +2,7 @@ package com.ana.bookcrossing.book;
 
 import com.ana.bookcrossing.common.PageResponse;
 import com.ana.bookcrossing.exception.OperationNotPermittedException;
+import com.ana.bookcrossing.file.FileStorageService;
 import com.ana.bookcrossing.history.BookTransactionHistory;
 import com.ana.bookcrossing.history.BookTransactionHistoryRepository;
 import com.ana.bookcrossing.user.User;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +26,7 @@ public class BookService {
     private final BookMapper bookMapper;
     private final BookRepository bookRepository;
     private final BookTransactionHistoryRepository bookTransactionHistoryRepository;
+    private final FileStorageService fileStorageService;
 
     public Long save(BookRequest request, Authentication connectedUser) {
         User user = (User) connectedUser.getPrincipal();
@@ -187,5 +190,14 @@ public class BookService {
                 .orElseThrow(() -> new OperationNotPermittedException("The book isn't returned yet"));
         bookTransactionHistory.setReturnApproved(true);
         return bookTransactionHistoryRepository.save(bookTransactionHistory).getId();
+    }
+
+    public void uploadBookCoverPicture(MultipartFile file, Authentication connectedUser, Long bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("No book found with id " + bookId));
+        User user = (User) connectedUser.getPrincipal();
+        var bookCover = fileStorageService.saveFile(file, user.getId());
+        book.setBookCover(bookCover);
+        bookRepository.save(book);
     }
 }
