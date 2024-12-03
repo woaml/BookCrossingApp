@@ -41,7 +41,7 @@ public class BookService {
                 .orElseThrow(() -> new EntityNotFoundException("Book not found"));
     }
 
-    public PageResponse findAllBooks(int page, int size, Authentication connectedUser) {
+    public PageResponse<BookResponse> findAllBooks(int page, int size, Authentication connectedUser) {
         User user = (User) connectedUser.getPrincipal();
         Pageable pageable = PageRequest.of(page, size, Sort.by("creationDate").descending());
         Page<Book> books = bookRepository.findAllDisplayableBooks(pageable, user.getId());
